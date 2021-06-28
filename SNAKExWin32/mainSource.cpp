@@ -1,11 +1,10 @@
 #include <Windows.h>
 #include <strsafe.h>
+#include "resource.h"
 
 #include "GameManager.h"
-#include "Sprite.h"
-#include "Snake.h"
 
-#define TM_TIMER_FRAME 1010
+#define TM_TIMER_FRAME 2000
 
 HINSTANCE instGlobal;
 HWND hWindow;
@@ -15,16 +14,17 @@ HDC hdcBackBuffer = 0;
 HBITMAP myHSurface;
 HBITMAP myHoldSurface;
 
+GAMEMANAGER* GAMEMANAGER::_instance = NULL;
+
 SNAKE player;
-
-void Render(HWND, HDC);
-
 
 LRESULT CALLBACK winProc(HWND, UINT, WPARAM, LPARAM);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int cShow) {
 	instGlobal = hInstance;
-	
+
+	myHDC = hdcBackBuffer;
+
 	WNDCLASSEX snCEx;
 	ZeroMemory(&snCEx, sizeof(WNDCLASSEX));
 
@@ -47,7 +47,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	}
 
 	hWindow = CreateWindow(L"SNKWINDOW", L"SNAKExWin32", WS_OVERLAPPEDWINDOW,
-		                   CW_USEDEFAULT, CW_USEDEFAULT, 800, 600,
+		                   CW_USEDEFAULT, CW_USEDEFAULT, 368, 426,
 		                   NULL, NULL, hInstance, NULL);
 
 	if (!hWindow) {
@@ -75,15 +75,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 
 LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 	PAINTSTRUCT ps;
-	HDC hdc;
 	switch (msg) {
 	case WM_CREATE: {
 		//Load Sprites
 		GAMEMANAGER* manager = GAMEMANAGER::getInstance();
-		manager->ChangeState(MENU_SCREEN);
+		manager->ChangeState(instGlobal, MENU_SCREEN);
+		manager->InitializeScreen(hwnd);
 		break;
 	}
 	case WM_PAINT: {
+		BeginPaint(hwnd, &ps);
+		EndPaint(hwnd, &ps);
 		break;
 	}
 	case WM_KEYDOWN: {
@@ -92,7 +94,9 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 	case WM_TIMER: {
 		switch (LOWORD(wparam)) {
 		case TM_TIMER_FRAME:
-			Render(hwnd, hdc);
+			GAMEMANAGER* manager = GAMEMANAGER::getInstance();
+			manager->Renderize();
+			manager->Render(hwnd);
 			break;
 		}
 		break;
@@ -106,10 +110,4 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 		break;
 	}
 	return 0;
-}
-
-void Render(HWND window, HDC myContext) {
-	HDC hWndDC = GetDC(window);
-	BitBlt(hWndDC, 0, 0, 800, 600, myContext, 0, 0, SRCCOPY);
-	ReleaseDC(window, hWndDC);
 }

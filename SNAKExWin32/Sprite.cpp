@@ -2,18 +2,37 @@
 
 void SPRITE::LoadSprite(HINSTANCE hInstance, UINT imageID, UINT maskID) {
 	hImage = LoadBitmap(hInstance, MAKEINTRESOURCE(imageID));
-	hMask = LoadBitmap(hInstance, MAKEINTRESOURCE(maskID));
 	GetObject(hImage, sizeof(BITMAP), &bmpImage);
-	GetObject(hMask, sizeof(BITMAP), &bmpMask);
+	if (maskID != NO_MASK) {
+		hMask = LoadBitmap(hInstance, MAKEINTRESOURCE(maskID));
+		GetObject(hMask, sizeof(BITMAP), &bmpMask);
+	}
 	width = bmpImage.bmWidth;
-	height = bmpMask.bmHeight;
+	height = bmpImage.bmHeight;
 }
+
 void SPRITE::Draw(HDC destino, HDC backBuff, int px, int py) {
 	HGDIOBJ oldObj = SelectObject(backBuff, hMask);
 	BitBlt(destino, px, py, width, height, backBuff, 0, 0, SRCAND);
 	SelectObject(backBuff, hImage);
 	BitBlt(destino, px, py, width, height, backBuff, 0, 0, SRCPAINT);
 	SelectObject(backBuff, oldObj);
+}
+void SPRITE::DrawCut(HDC destino, HDC backBuff, int px, int py, int width, int height, int fromx, int fromy) {
+	if (width > this->width)
+		width = this->width;
+	if (height > this->height)
+		height = this->height;
+	HGDIOBJ oldObj = SelectObject(backBuff, hMask);
+	BitBlt(destino, px, py, width, height, backBuff, fromx, fromy, SRCAND);
+	SelectObject(backBuff, hImage);
+	BitBlt(destino, px, py, width, height, backBuff, fromx, fromy, SRCPAINT);
+	SelectObject(backBuff, oldObj);
+}
+void SPRITE::DrawTransparent(HDC destino, HDC backBuff, RECT dR, RECT sR) {
+	COLORREF transparent_color = RGB(0, 255, 0);
+	SelectObject(backBuff, hImage);
+	TransparentBlt(destino, dR.left, dR.top, dR.right, dR.bottom, backBuff, sR.left, sR.top, sR.right, sR.bottom, transparent_color);
 }
 
 void SPRITE::SetHBMImage(HBITMAP param) {

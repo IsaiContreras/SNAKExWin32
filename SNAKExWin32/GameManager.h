@@ -1,46 +1,46 @@
 #ifndef _GAME
 #define _GAME
 
+#include "resource.h"
 #include "Sprite.h"
 #include "Snake.h"
 
+// Estado del juego
 enum GAMESTATE {
 	MENU_SCREEN,
 	IN_GAME,
 	RESULTS_SCREEN
 };
 
+// GameManager Singleton
 class GAMEMANAGER {
+
+	HDC myDC;
+	HDC backBuff;
+	HBITMAP surface;
+	HBITMAP emptySurface;
 
 	short GameState;
 	bool pause = false;
 
-	SPRITE* selection;
-	SPRITE* menuScreen[5];
-	SPRITE* resultsScreen[15];
+	SPRITE* spritesheet;
 
-	SNAKE* player;
+	static GAMEMANAGER* _instance;
 
-	static GAMEMANAGER* _INSTANCE;
+	GAMEMANAGER();
 
-	GAMEMANAGER(){}
-
-	void InitMenu();
-	void InitGame();
-	void InitResults();
+	void InitMenu(HINSTANCE);
+	void InitGame(HINSTANCE);
+	void InitResults(HINSTANCE);
 
 public:
 
-	static GAMEMANAGER* getInstance() {
-		if (!_INSTANCE) {
-			_INSTANCE = new GAMEMANAGER();
-		}
-		return _INSTANCE;
-	}
+	static GAMEMANAGER* getInstance();
 
-	void ChangeState(short);
+	void InitializeScreen(HWND);
 
+	void ChangeState(HINSTANCE, short);
+	void Renderize();
+	void Render(HWND);
 };
-GAMEMANAGER* GAMEMANAGER::_INSTANCE = NULL;
-
 #endif

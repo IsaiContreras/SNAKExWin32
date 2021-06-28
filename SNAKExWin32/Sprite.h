@@ -2,6 +2,9 @@
 #define _SPRITE_CLASS
 
 #include <Windows.h>
+#include "resource.h"
+
+#pragma comment(lib, "Msimg32.lib")
 
 class SPRITE {
 	HBITMAP hImage;
@@ -15,6 +18,8 @@ public:
 	void LoadSprite(HINSTANCE, UINT, UINT);
 	// Dibujar el sprite.
 	void Draw(HDC, HDC, int posx, int poxy);
+	void DrawCut(HDC, HDC, int, int, int, int, int, int);
+	void DrawTransparent(HDC, HDC, RECT, RECT);
 
 	// Asignar objeto hImage.
 	void SetHBMImage(HBITMAP);
