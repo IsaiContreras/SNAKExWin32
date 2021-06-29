@@ -138,7 +138,10 @@
     <ResourceCompile Include="SNAKExWin32.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Sprites\snake_spritesheet.bmp" />
+    <Image Include="Sprites\background.bmp" />
+    <Image Include="Sprites\background_mask.bmp" />
+    <Image Include="Sprites\menu_cards.bmp" />
+    <Image Include="Sprites\menu_cards_mask.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

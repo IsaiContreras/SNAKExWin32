@@ -16,8 +16,6 @@ HBITMAP myHoldSurface;
 
 GAMEMANAGER* GAMEMANAGER::_instance = NULL;
 
-SNAKE player;
-
 LRESULT CALLBACK winProc(HWND, UINT, WPARAM, LPARAM);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int cShow) {
@@ -47,7 +45,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	}
 
 	hWindow = CreateWindow(L"SNKWINDOW", L"SNAKExWin32", WS_OVERLAPPEDWINDOW,
-		                   CW_USEDEFAULT, CW_USEDEFAULT, 368, 426,
+		                   CW_USEDEFAULT, CW_USEDEFAULT, 720, 804,
 		                   NULL, NULL, hInstance, NULL);
 
 	if (!hWindow) {

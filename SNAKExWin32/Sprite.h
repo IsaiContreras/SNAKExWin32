@@ -14,6 +14,10 @@ class SPRITE {
 	int width;
 	int height;
 public:
+	
+	SPRITE(HINSTANCE, UINT, UINT);
+	~SPRITE();
+
 	// Cargar sprite.
 	void LoadSprite(HINSTANCE, UINT, UINT);
 	// Dibujar el sprite.

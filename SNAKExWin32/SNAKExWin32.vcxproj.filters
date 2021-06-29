@@ -48,7 +48,16 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Sprites\snake_spritesheet.bmp">
+    <Image Include="Sprites\background.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Sprites\background_mask.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Sprites\menu_cards.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Sprites\menu_cards_mask.bmp">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>

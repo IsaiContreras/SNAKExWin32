@@ -1,7 +1,14 @@
 #include "GameManager.h"
 
 GAMEMANAGER::GAMEMANAGER() {
-	myDC = backBuff = 0;
+	outputDC = backBuff = 0;
+}
+GAMEMANAGER::~GAMEMANAGER() {
+	ReleaseAllSprites();
+	DeleteObject(surface);
+	DeleteObject(emptySurface);
+	DeleteObject(outputDC);
+	DeleteObject(backBuff);
 }
 
 GAMEMANAGER* GAMEMANAGER::getInstance() {
@@ -12,8 +19,8 @@ GAMEMANAGER* GAMEMANAGER::getInstance() {
 }
 
 void GAMEMANAGER::InitMenu(HINSTANCE hInstance) {
-	spritesheet = new SPRITE();
-	spritesheet->LoadSprite(hInstance, IDB_SPRITESHEET, NO_MASK);
+	background = new SPRITE(hInstance, IDB_BACKGROUND, IDB_BACKGROUND_M);
+	menusheet = new SPRITE(hInstance, IDB_MENU, IDB_MENU_M);
 }
 void GAMEMANAGER::InitGame(HINSTANCE hInstance) {
 
@@ -21,18 +28,22 @@ void GAMEMANAGER::InitGame(HINSTANCE hInstance) {
 void GAMEMANAGER::InitResults(HINSTANCE hInstance) {
 
 }
+void GAMEMANAGER::ReleaseAllSprites() {
+	delete background;
+	delete menusheet;
+}
 
 void GAMEMANAGER::InitializeScreen(HWND hwnd) {
 	backBuff = CreateCompatibleDC(NULL);
 	HDC tempDC = GetDC(hwnd);
-	myDC = CreateCompatibleDC(tempDC);
-	surface = CreateCompatibleBitmap(tempDC, spritesheet->GetWidth(), spritesheet->GetHeight());
+	outputDC = CreateCompatibleDC(tempDC);
+	surface = CreateCompatibleBitmap(tempDC, 720, 804);
 	ReleaseDC(hwnd, tempDC);
-	emptySurface = (HBITMAP)SelectObject(myDC, surface);
+	emptySurface = (HBITMAP)SelectObject(outputDC, surface);
 	HBRUSH bWhite = (HBRUSH)GetStockObject(BLACK_BRUSH);
-	HBRUSH oldBrush = (HBRUSH)SelectObject(myDC, bWhite);
-	Rectangle(myDC, 0, 0, spritesheet->GetWidth(), spritesheet->GetHeight());
-	SelectObject(myDC, oldBrush);
+	HBRUSH oldBrush = (HBRUSH)SelectObject(outputDC, bWhite);
+	Rectangle(outputDC, 0, 0, 720, 804);
+	SelectObject(outputDC, oldBrush);
 }
 void GAMEMANAGER::ChangeState(HINSTANCE hInstance, short state) {
 	this->GameState = state;
@@ -49,10 +60,11 @@ void GAMEMANAGER::ChangeState(HINSTANCE hInstance, short state) {
 	}
 }
 void GAMEMANAGER::Renderize() {
+	background->Draw(outputDC, backBuff, 0, 0);
 	switch (GameState) {
 	case MENU_SCREEN:
-		spritesheet->DrawTransparent(myDC, backBuff, RECT{ 0, 0, 352, 352 }, RECT{0, 17, 352, 352});
-		spritesheet->DrawTransparent(myDC, backBuff, RECT{ 43, 30, 266, 230 }, RECT{ 568, 0, 266, 230 });
+		menusheet->DrawCut(outputDC, backBuff, 20, 20, 497, 184, 112, 100);
+		menusheet->DrawCut(outputDC, backBuff, 20, 205, 471, 44, 125, 450);
 		break;
 	case IN_GAME:
 		break;
@@ -62,6 +74,6 @@ void GAMEMANAGER::Renderize() {
 }
 void GAMEMANAGER::Render(HWND hwnd) {
 	HDC hWndDC = GetDC(hwnd);
-	BitBlt(hWndDC, 0, 0, 368, 426, myDC, 0, 0, SRCCOPY);
+	BitBlt(hWndDC, 0, 0, 720, 804, outputDC, 0, 0, SRCCOPY);
 	ReleaseDC(hwnd, hWndDC);
 }

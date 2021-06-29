@@ -15,7 +15,7 @@ enum GAMESTATE {
 // GameManager Singleton
 class GAMEMANAGER {
 
-	HDC myDC;
+	HDC outputDC;
 	HDC backBuff;
 	HBITMAP surface;
 	HBITMAP emptySurface;
@@ -23,15 +23,19 @@ class GAMEMANAGER {
 	short GameState;
 	bool pause = false;
 
-	SPRITE* spritesheet;
+	SPRITE* background;
+	SPRITE* menusheet;
 
 	static GAMEMANAGER* _instance;
 
 	GAMEMANAGER();
+	~GAMEMANAGER();
 
 	void InitMenu(HINSTANCE);
 	void InitGame(HINSTANCE);
 	void InitResults(HINSTANCE);
+
+	void ReleaseAllSprites();
 
 public:
 
@@ -42,5 +46,6 @@ public:
 	void ChangeState(HINSTANCE, short);
 	void Renderize();
 	void Render(HWND);
+
 };
 #endif

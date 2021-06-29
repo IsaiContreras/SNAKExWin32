@@ -1,5 +1,13 @@
 #include "Sprite.h"
 
+SPRITE::SPRITE(HINSTANCE hInstance, UINT imageID, UINT maskID) {
+	LoadSprite(hInstance, imageID, maskID);
+}
+SPRITE::~SPRITE() {
+	DeleteObject(hMask);
+	DeleteObject(hImage);
+}
+
 void SPRITE::LoadSprite(HINSTANCE hInstance, UINT imageID, UINT maskID) {
 	hImage = LoadBitmap(hInstance, MAKEINTRESOURCE(imageID));
 	GetObject(hImage, sizeof(BITMAP), &bmpImage);
@@ -18,7 +26,7 @@ void SPRITE::Draw(HDC destino, HDC backBuff, int px, int py) {
 	BitBlt(destino, px, py, width, height, backBuff, 0, 0, SRCPAINT);
 	SelectObject(backBuff, oldObj);
 }
-void SPRITE::DrawCut(HDC destino, HDC backBuff, int px, int py, int width, int height, int fromx, int fromy) {
+void SPRITE::DrawCut(HDC destino, HDC backBuff, int fromx, int fromy, int width, int height, int px, int py) {
 	if (width > this->width)
 		width = this->width;
 	if (height > this->height)
