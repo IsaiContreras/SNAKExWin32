@@ -104,9 +104,19 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			switch (currState.wButtons) {
 			case XINPUT_GAMEPAD_DPAD_UP:
 				if (prevState.wButtons & currState.wButtons) break;
+				switch (manager->GetGameState()) {
+				case MENU_SCREEN:
+					manager->ChangeSelectedIndex(XINPUT_GAMEPAD_DPAD_UP);
+					break;
+				}
 				break;
 			case XINPUT_GAMEPAD_DPAD_DOWN:
 				if (prevState.wButtons & currState.wButtons) break;
+				switch (manager->GetGameState()) {
+				case MENU_SCREEN:
+					manager->ChangeSelectedIndex(XINPUT_GAMEPAD_DPAD_DOWN);
+					break;
+				}
 				break;
 			case XINPUT_GAMEPAD_DPAD_LEFT:
 				if (prevState.wButtons & currState.wButtons) break;
@@ -124,6 +134,11 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 				break;
 			case XINPUT_GAMEPAD_A:
 				if (prevState.wButtons & currState.wButtons) break;
+				switch (manager->GetGameState()) {
+				case MENU_SCREEN:
+					manager->SelectOption(hwnd);
+					break;
+				}
 				break;
 			}
 			prevState = currState;
@@ -139,6 +154,8 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 		break;
 	}
 	case WM_DESTROY: {
+		GAMEMANAGER* manager = GAMEMANAGER::getInstance();
+		delete manager;
 		PostQuitMessage(0);
 		break;
 	}

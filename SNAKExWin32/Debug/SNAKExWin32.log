@@ -1,4 +1,6 @@
-﻿  mainSource.cpp
+﻿  GameManager.cpp
+  mainSource.cpp
 d:\alexi\documents\carpetas de proyectos\proyectos visual\snakexwin32\snakexwin32\mainsource.cpp(40): warning C4302: 'conversión de tipo': truncamiento de 'LPWSTR' a 'WORD'
 d:\alexi\documents\carpetas de proyectos\proyectos visual\snakexwin32\snakexwin32\mainsource.cpp(45): warning C4302: 'conversión de tipo': truncamiento de 'LPWSTR' a 'WORD'
+  Generando código...
   SNAKExWin32.vcxproj -> D:\alexi\Documents\CARPETAS DE PROYECTOS\Proyectos VISUAL\SNAKExWin32\Debug\SNAKExWin32.exe

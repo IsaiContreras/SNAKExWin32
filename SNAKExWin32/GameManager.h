@@ -4,6 +4,7 @@
 #include "resource.h"
 #include "Sprite.h"
 #include "Snake.h"
+#include "GamePadRR.h"
 
 // Estado del juego
 enum GAMESTATE {
@@ -25,30 +26,38 @@ class GAMEMANAGER {
 	unsigned short GameState;
 	bool pause = false;
 
-	SPRITE* background;
-	SPRITE* menusheet;
+	short selectedIndex;
+
+	SPRITE* background = NULL;
+	SPRITE* menusheet = NULL;
 
 	static GAMEMANAGER* _instance;
 
 	GAMEMANAGER();
-	~GAMEMANAGER();
-
+	
 	void LoadBackground(HINSTANCE);
 	void LoadTitleSprites(HINSTANCE);
 	void LoadGameSprites(HINSTANCE);
 	void LoadResultsSprites(HINSTANCE);
 
+	void ExitGame(HWND);
+
 	void ReleaseAllSprites();
 
 public:
 
+	~GAMEMANAGER();
+
 	static GAMEMANAGER* getInstance();
 
 	void InitializeScreen(HWND);
-
+	void SelectOption(HWND hwnd);
+	
 	void ChangeState(HINSTANCE, unsigned short);
 	void Renderize();
 	void Render(HWND);
+
+	void ChangeSelectedIndex(UINT button);
 
 	unsigned short GetGameState();
 
