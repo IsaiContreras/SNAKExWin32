@@ -18,14 +18,16 @@ GAMEMANAGER* GAMEMANAGER::getInstance() {
 	return _instance;
 }
 
-void GAMEMANAGER::InitMenu(HINSTANCE hInstance) {
+void GAMEMANAGER::LoadBackground(HINSTANCE hInstance) {
 	background = new SPRITE(hInstance, IDB_BACKGROUND, IDB_BACKGROUND_M);
+}
+void GAMEMANAGER::LoadTitleSprites(HINSTANCE hInstance) {
 	menusheet = new SPRITE(hInstance, IDB_MENU, IDB_MENU_M);
 }
-void GAMEMANAGER::InitGame(HINSTANCE hInstance) {
+void GAMEMANAGER::LoadGameSprites(HINSTANCE hInstance) {
 
 }
-void GAMEMANAGER::InitResults(HINSTANCE hInstance) {
+void GAMEMANAGER::LoadResultsSprites(HINSTANCE hInstance) {
 
 }
 void GAMEMANAGER::ReleaseAllSprites() {
@@ -45,26 +47,34 @@ void GAMEMANAGER::InitializeScreen(HWND hwnd) {
 	Rectangle(outputDC, 0, 0, 720, 804);
 	SelectObject(outputDC, oldBrush);
 }
-void GAMEMANAGER::ChangeState(HINSTANCE hInstance, short state) {
+void GAMEMANAGER::ChangeState(HINSTANCE hInstance, unsigned short state) {
 	this->GameState = state;
 	switch (state) {
-	case MENU_SCREEN:
-		InitMenu(hInstance);
+	case INITIALIZE:
+		LoadBackground(hInstance);
+		LoadTitleSprites(hInstance);
+		this->GameState = TITLE_SCREEN;
+		break;
+	case TITLE_SCREEN:
+		LoadTitleSprites(hInstance);
 		break;
 	case IN_GAME:
-		InitGame(hInstance);
+		LoadGameSprites(hInstance);
 		break;
 	case RESULTS_SCREEN:
-		InitResults(hInstance);
+		LoadResultsSprites(hInstance);
 		break;
 	}
 }
 void GAMEMANAGER::Renderize() {
 	background->Draw(outputDC, backBuff, 0, 0);
 	switch (GameState) {
-	case MENU_SCREEN:
+	case TITLE_SCREEN:
 		menusheet->DrawCut(outputDC, backBuff, 20, 20, 497, 184, 112, 100);
 		menusheet->DrawCut(outputDC, backBuff, 20, 205, 471, 44, 125, 450);
+		break;
+	case MENU_SCREEN:
+		menusheet->DrawCut(outputDC, backBuff, 20, 20, 497, 184, 112, 100);
 		break;
 	case IN_GAME:
 		break;
@@ -76,4 +86,8 @@ void GAMEMANAGER::Render(HWND hwnd) {
 	HDC hWndDC = GetDC(hwnd);
 	BitBlt(hWndDC, 0, 0, 720, 804, outputDC, 0, 0, SRCCOPY);
 	ReleaseDC(hwnd, hWndDC);
+}
+
+unsigned short GAMEMANAGER::GetGameState() {
+	return this->GameState;
 }

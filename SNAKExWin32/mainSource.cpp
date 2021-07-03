@@ -3,11 +3,16 @@
 #include "resource.h"
 
 #include "GameManager.h"
+#include "GamePadRR.h"
 
 #define TM_TIMER_FRAME 2000
+#define TM_TIMER_GAMEPAD 2001
 
 HINSTANCE instGlobal;
 HWND hWindow;
+
+GamePadRR jugador(1);
+XINPUT_GAMEPAD prevState;
 
 HDC myHDC;
 HDC hdcBackBuffer = 0;
@@ -57,6 +62,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 	UpdateWindow(hWindow);
 
 	SetTimer(hWindow, TM_TIMER_FRAME, 1000/30, NULL);
+	SetTimer(hWindow, TM_TIMER_GAMEPAD, 10, NULL);
 
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
@@ -77,7 +83,7 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 	case WM_CREATE: {
 		//Load Sprites
 		GAMEMANAGER* manager = GAMEMANAGER::getInstance();
-		manager->ChangeState(instGlobal, MENU_SCREEN);
+		manager->ChangeState(instGlobal, INITIALIZE);
 		manager->InitializeScreen(hwnd);
 		break;
 	}
@@ -91,11 +97,44 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 	}
 	case WM_TIMER: {
 		switch (LOWORD(wparam)) {
-		case TM_TIMER_FRAME:
+		case TM_TIMER_GAMEPAD: {
+			if (!jugador.IsConnected()) break;
+			GAMEMANAGER* manager = GAMEMANAGER::getInstance();
+			XINPUT_GAMEPAD currState = jugador.GetState().Gamepad;
+			switch (currState.wButtons) {
+			case XINPUT_GAMEPAD_DPAD_UP:
+				if (prevState.wButtons & currState.wButtons) break;
+				break;
+			case XINPUT_GAMEPAD_DPAD_DOWN:
+				if (prevState.wButtons & currState.wButtons) break;
+				break;
+			case XINPUT_GAMEPAD_DPAD_LEFT:
+				if (prevState.wButtons & currState.wButtons) break;
+				break;
+			case XINPUT_GAMEPAD_DPAD_RIGHT:
+				if (prevState.wButtons & currState.wButtons) break;
+				break;
+			case XINPUT_GAMEPAD_START:
+				if (prevState.wButtons & currState.wButtons) break;
+				switch (manager->GetGameState()) {
+				case TITLE_SCREEN:
+					manager->ChangeState(instGlobal, MENU_SCREEN);
+					break;
+				}
+				break;
+			case XINPUT_GAMEPAD_A:
+				if (prevState.wButtons & currState.wButtons) break;
+				break;
+			}
+			prevState = currState;
+			break;
+		}
+		case TM_TIMER_FRAME: {
 			GAMEMANAGER* manager = GAMEMANAGER::getInstance();
 			manager->Renderize();
 			manager->Render(hwnd);
 			break;
+		}
 		}
 		break;
 	}

@@ -7,6 +7,8 @@
 
 // Estado del juego
 enum GAMESTATE {
+	INITIALIZE,
+	TITLE_SCREEN,
 	MENU_SCREEN,
 	IN_GAME,
 	RESULTS_SCREEN
@@ -20,7 +22,7 @@ class GAMEMANAGER {
 	HBITMAP surface;
 	HBITMAP emptySurface;
 
-	short GameState;
+	unsigned short GameState;
 	bool pause = false;
 
 	SPRITE* background;
@@ -31,9 +33,10 @@ class GAMEMANAGER {
 	GAMEMANAGER();
 	~GAMEMANAGER();
 
-	void InitMenu(HINSTANCE);
-	void InitGame(HINSTANCE);
-	void InitResults(HINSTANCE);
+	void LoadBackground(HINSTANCE);
+	void LoadTitleSprites(HINSTANCE);
+	void LoadGameSprites(HINSTANCE);
+	void LoadResultsSprites(HINSTANCE);
 
 	void ReleaseAllSprites();
 
@@ -43,9 +46,11 @@ public:
 
 	void InitializeScreen(HWND);
 
-	void ChangeState(HINSTANCE, short);
+	void ChangeState(HINSTANCE, unsigned short);
 	void Renderize();
 	void Render(HWND);
+
+	unsigned short GetGameState();
 
 };
 #endif
