@@ -22,7 +22,7 @@ public:
 	void LoadSprite(HINSTANCE, UINT, UINT);
 	// Dibujar el sprite.
 	void Draw(HDC, HDC, int posx, int poxy);
-	void DrawCut(HDC, HDC, int, int, int, int, int, int);
+	void DrawCut(HDC, HDC, int fromx, int fromy, int width, int height, int px, int py);
 	void DrawTransparent(HDC, HDC, RECT, RECT);
 
 	// Asignar objeto hImage.

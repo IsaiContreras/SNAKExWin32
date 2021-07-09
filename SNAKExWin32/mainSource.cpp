@@ -93,6 +93,47 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 		break;
 	}
 	case WM_KEYDOWN: {
+		GAMEMANAGER* manager = GAMEMANAGER::getInstance();
+		switch (LOWORD(wparam)) {
+		case VK_UP:
+			switch (manager->GetGameState()) {
+			case MENU_SCREEN:
+				manager->ChangeSelectedIndex(XINPUT_GAMEPAD_DPAD_UP);
+				break;
+			}
+			break;
+		case VK_DOWN:
+			switch (manager->GetGameState()) {
+			case MENU_SCREEN:
+				manager->ChangeSelectedIndex(XINPUT_GAMEPAD_DPAD_DOWN);
+				break;
+			}
+			break;
+		case VK_LEFT:
+			switch (manager->GetGameState()) {
+
+			}
+			break;
+		case VK_RIGHT:
+			switch (manager->GetGameState()) {
+
+			}
+			break;
+		case VK_RETURN:
+			switch (manager->GetGameState()) {
+			case TITLE_SCREEN:
+				manager->ChangeState(instGlobal, MENU_SCREEN);
+				break;
+			}
+			break;
+		case VK_SPACE:
+			switch (manager->GetGameState()) {
+			case MENU_SCREEN:
+				manager->SelectOption(instGlobal, hwnd);
+				break;
+			}
+			break;
+		}
 		break;
 	}
 	case WM_TIMER: {
@@ -136,7 +177,7 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 				if (prevState.wButtons & currState.wButtons) break;
 				switch (manager->GetGameState()) {
 				case MENU_SCREEN:
-					manager->SelectOption(hwnd);
+					manager->SelectOption(instGlobal, hwnd);
 					break;
 				}
 				break;
@@ -153,6 +194,9 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 		}
 		break;
 	}
+	case WM_CLOSE:
+		DestroyWindow(hwnd);
+		break;
 	case WM_DESTROY: {
 		GAMEMANAGER* manager = GAMEMANAGER::getInstance();
 		delete manager;

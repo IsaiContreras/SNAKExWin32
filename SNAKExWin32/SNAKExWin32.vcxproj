@@ -145,6 +145,8 @@
     <Image Include="Sprites\background_mask.bmp" />
     <Image Include="Sprites\menu_cards.bmp" />
     <Image Include="Sprites\menu_cards_mask.bmp" />
+    <Image Include="Sprites\snake_sprites.bmp" />
+    <Image Include="Sprites\snake_sprites_mask.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

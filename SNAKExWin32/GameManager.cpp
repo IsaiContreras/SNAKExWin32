@@ -1,10 +1,10 @@
 #include "GameManager.h"
 
 GAMEMANAGER::GAMEMANAGER() {
-	outputDC = backBuff = 0;
+	outputDC = backBuff = NULL;
 }
 
-void GAMEMANAGER::LoadBackground(HINSTANCE hInstance) {
+void GAMEMANAGER::LoadBackgroundSprite(HINSTANCE hInstance) {
 	if (!background)
 		background = new SPRITE(hInstance, IDB_BACKGROUND, IDB_BACKGROUND_M);
 }
@@ -13,10 +13,32 @@ void GAMEMANAGER::LoadTitleSprites(HINSTANCE hInstance) {
 		menusheet = new SPRITE(hInstance, IDB_MENU, IDB_MENU_M);
 }
 void GAMEMANAGER::LoadGameSprites(HINSTANCE hInstance) {
-
+	player = new SNAKE(hInstance, IDB_SNAKE, IDB_SNAKE_M, 352, 352, 3, 20, 3);
 }
 void GAMEMANAGER::LoadResultsSprites(HINSTANCE hInstance) {
 
+}
+
+void GAMEMANAGER::ReleaseBackgroundSprite() {
+	if (background) {
+		delete background;
+		background = NULL;
+	}
+}
+void GAMEMANAGER::ReleaseTitleSprites() {
+	if (menusheet) {
+		delete menusheet;
+		menusheet = NULL;
+	}
+}
+void GAMEMANAGER::ReleaseGameSprites() {
+	if (player) {
+		delete player;
+		player = NULL;
+	}
+}
+void GAMEMANAGER::ReleaseResultsSprites() {
+	
 }
 
 void GAMEMANAGER::ExitGame(HWND hwnd) {
@@ -24,8 +46,10 @@ void GAMEMANAGER::ExitGame(HWND hwnd) {
 }
 
 void GAMEMANAGER::ReleaseAllSprites() {
-	delete background;
-	delete menusheet;
+	ReleaseBackgroundSprite();
+	ReleaseTitleSprites();
+	ReleaseGameSprites();
+	ReleaseResultsSprites();
 }
 
 GAMEMANAGER::~GAMEMANAGER() {
@@ -55,13 +79,19 @@ void GAMEMANAGER::InitializeScreen(HWND hwnd) {
 	Rectangle(outputDC, 0, 0, 720, 804);
 	SelectObject(outputDC, oldBrush);
 }
-void GAMEMANAGER::SelectOption(HWND hwnd) {
+void GAMEMANAGER::SelectOption(HINSTANCE hInst, HWND hwnd) {
 	switch (selectedIndex) {
 	case 0:
+		ReleaseTitleSprites();
+		ChangeState(hInst, IN_GAME);
 		break;
 	case 1:
+		ReleaseTitleSprites();
+		ChangeState(hInst, IN_GAME);
 		break;
 	case 2:
+		ReleaseTitleSprites();
+		ChangeState(hInst, IN_GAME);
 		break;
 	case 3:
 		ExitGame(hwnd);
@@ -73,7 +103,7 @@ void GAMEMANAGER::ChangeState(HINSTANCE hInstance, unsigned short state) {
 	this->GameState = state;
 	switch (state) {
 	case INITIALIZE:
-		LoadBackground(hInstance);
+		LoadBackgroundSprite(hInstance);
 		LoadTitleSprites(hInstance);
 		this->GameState = TITLE_SCREEN;
 		break;
@@ -110,6 +140,7 @@ void GAMEMANAGER::Renderize() {
 		else menusheet->DrawCut(outputDC, backBuff, 518, 20, 46, 30, 177, 607 + (54 * (selectedIndex - 3)));
 		break;
 	case IN_GAME:
+		player->DrawSnake(outputDC, backBuff);
 		break;
 	case RESULTS_SCREEN:
 		break;

@@ -66,5 +66,11 @@
     <Image Include="Sprites\menu_cards_mask.bmp">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="Sprites\snake_sprites.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Sprites\snake_sprites_mask.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -26,19 +26,28 @@ class GAMEMANAGER {
 	unsigned short GameState;
 	bool pause = false;
 
+	unsigned long score;
+
 	short selectedIndex;
 
 	SPRITE* background = NULL;
 	SPRITE* menusheet = NULL;
 
+	SNAKE* player;
+
 	static GAMEMANAGER* _instance;
 
 	GAMEMANAGER();
 	
-	void LoadBackground(HINSTANCE);
+	void LoadBackgroundSprite(HINSTANCE);
 	void LoadTitleSprites(HINSTANCE);
 	void LoadGameSprites(HINSTANCE);
 	void LoadResultsSprites(HINSTANCE);
+
+	void ReleaseBackgroundSprite();
+	void ReleaseTitleSprites();
+	void ReleaseGameSprites();
+	void ReleaseResultsSprites();
 
 	void ExitGame(HWND);
 
@@ -51,7 +60,7 @@ public:
 	static GAMEMANAGER* getInstance();
 
 	void InitializeScreen(HWND);
-	void SelectOption(HWND hwnd);
+	void SelectOption(HINSTANCE hInst, HWND hwnd);
 	
 	void ChangeState(HINSTANCE, unsigned short);
 	void Renderize();
