@@ -3,7 +3,7 @@
 SNAKE::SNAKE(HINSTANCE hInst, UINT imageID, UINT maskID, int initPX, int initPY, int facing, int speed, unsigned int longtail) : SPRITE(hInst, imageID, maskID) {
 	this->psx = initPX;
 	this->psy = initPY;
-	this->facing = facing;
+	this->facing_sprite = facing;
 	this->speed = speed;
 	this->longtail = longtail;
 	for (unsigned int i = 1; i <= longtail; i++) {
@@ -84,6 +84,8 @@ void SNAKE::MoveSnake() {
 			break;
 		}
 		MoveTail(prevpsx, prevpsy);
+		facing_sprite = facing;
+		state = PLAYING;
 		steps = speed;
 	}
 	else steps--;
@@ -109,11 +111,15 @@ void SNAKE::ChangeFacing(unsigned int newfacing) {
 	if (facing == EAST && newfacing == WEST) return;
 	if (facing == SOUTH && newfacing == NORTH) return;
 	if (facing == WEST && newfacing == EAST) return;
-	this->facing = newfacing;
+	if (state == COOLDOWN) return;
+	if (state == PLAYING){
+		this->facing = newfacing;
+		state = COOLDOWN;
+	}
 }
 
 void SNAKE::DrawSnake(HDC destino, HDC backBuff) {
-	DrawCut(destino, backBuff, 20 + (32 * this->facing) , 20, 32, 32, this->psx, this->psy);
+	DrawCut(destino, backBuff, 20 + (32 * this->facing_sprite) , 20, 32, 32, this->psx, this->psy);
 	while (aux != NULL) {
 		DrawCut(destino, backBuff, 148, 20, 32, 32, aux->psx, aux->psy);
 		aux = aux->next;

@@ -5,6 +5,7 @@
 
 enum STATE {
 	STAND_BY,
+	COOLDOWN,
 	PLAYING,
 	CRASHED
 };
@@ -22,6 +23,7 @@ class SNAKE : private SPRITE {
 
 	int psx, psy;
 	unsigned int facing;
+	unsigned int facing_sprite;
 	unsigned int state = STAND_BY;
 	unsigned int speed;
 	unsigned int steps = 0;
