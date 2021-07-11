@@ -13,7 +13,7 @@ void GAMEMANAGER::LoadTitleSprites(HINSTANCE hInstance) {
 		menusheet = new SPRITE(hInstance, IDB_MENU, IDB_MENU_M);
 }
 void GAMEMANAGER::LoadGameSprites(HINSTANCE hInstance) {
-	player = new SNAKE(hInstance, IDB_SNAKE, IDB_SNAKE_M, 352, 352, 3, 20, 3);
+	player = new SNAKE(hInstance, IDB_SNAKE, IDB_SNAKE_M, 352, 352, WEST, 10, 3);
 }
 void GAMEMANAGER::LoadResultsSprites(HINSTANCE hInstance) {
 
@@ -121,6 +121,9 @@ void GAMEMANAGER::ChangeState(HINSTANCE hInstance, unsigned short state) {
 		break;
 	}
 }
+void GAMEMANAGER::Algorythm() {
+	player->MoveSnake();
+}
 void GAMEMANAGER::Renderize() {
 	background->Draw(outputDC, backBuff, 0, 0);
 	switch (GameState) {
@@ -158,6 +161,22 @@ void GAMEMANAGER::ChangeSelectedIndex(UINT button) {
 			selectedIndex < 3 ? selectedIndex++ : selectedIndex = 3;
 		if (button == XINPUT_GAMEPAD_DPAD_UP)
 			selectedIndex > 0 ? selectedIndex-- : selectedIndex = 0;
+	}
+}
+void GAMEMANAGER::Controler(UINT button) {
+	switch (button) {
+	case XINPUT_GAMEPAD_DPAD_UP:
+		player->ChangeFacing(NORTH);
+		break;
+	case XINPUT_GAMEPAD_DPAD_RIGHT:
+		player->ChangeFacing(EAST);
+		break;
+	case XINPUT_GAMEPAD_DPAD_DOWN:
+		player->ChangeFacing(SOUTH);
+		break;
+	case XINPUT_GAMEPAD_DPAD_LEFT:
+		player->ChangeFacing(WEST);
+		break;
 	}
 }
 

@@ -9,6 +9,13 @@ enum STATE {
 	CRASHED
 };
 
+enum FACING {
+	NORTH,
+	EAST,
+	SOUTH,
+	WEST
+};
+
 class SNAKE : private SPRITE {
 
 	friend class GAMEMANAGER;
@@ -17,6 +24,7 @@ class SNAKE : private SPRITE {
 	unsigned int facing;
 	unsigned int state = STAND_BY;
 	unsigned int speed;
+	unsigned int steps = 0;
 	unsigned int longtail;
 
 	class TAIL {
@@ -36,6 +44,11 @@ class SNAKE : private SPRITE {
 	
 	SNAKE(HINSTANCE, UINT, UINT, int initPX, int initPY, int facing, int speed, unsigned int longtail);
 	~SNAKE();
+
+	void MoveSnake();
+	void MoveTail(int psx, int psy);
+
+	void ChangeFacing(unsigned int newfacing);
 
 	void DrawSnake(HDC, HDC);
 

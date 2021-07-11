@@ -9,16 +9,16 @@ SNAKE::SNAKE(HINSTANCE hInst, UINT imageID, UINT maskID, int initPX, int initPY,
 	for (unsigned int i = 1; i <= longtail; i++) {
 		if (first != NULL) {
 			switch (facing) {
-			case 0:
+			case NORTH:
 				aux->next = new TAIL(initPX, ((initPY) + (32 * i)), facing);
 				break;
-			case 1:
+			case EAST:
 				aux->next = new TAIL(((initPX) - (32 * i)), initPY, facing);
 				break;
-			case 2:
+			case SOUTH:
 				aux->next = new TAIL(initPX, ((initPY) - (32 * i)), facing);
 				break;
-			case 3:
+			case WEST:
 				aux->next = new TAIL(((initPX) + (32 * i)), initPY, facing);
 				break;
 			}
@@ -29,16 +29,16 @@ SNAKE::SNAKE(HINSTANCE hInst, UINT imageID, UINT maskID, int initPX, int initPY,
 		}
 		else {
 			switch (facing) {
-			case 0:
+			case NORTH:
 				first = new TAIL(initPX, ((initPY) + (32 * i)), facing);
 				break;
-			case 1:
+			case EAST:
 				first = new TAIL(((initPX) - (32 * i)), initPY, facing);
 				break;
-			case 2:
+			case SOUTH:
 				first = new TAIL(initPX, ((initPY) - (32 * i)), facing);
 				break;
-			case 3:
+			case WEST:
 				first = new TAIL(((initPX) + (32 * i)), initPY, facing);
 				break;
 			}
@@ -62,6 +62,54 @@ SNAKE::TAIL::TAIL(int posx, int posy, unsigned int facing) {
 	this->facing = facing;
 	this->next = NULL;
 	this->prev = NULL;
+}
+
+void SNAKE::MoveSnake() {
+	if (state == STAND_BY) return;
+	if (steps == 0) {
+		int prevpsx = psx;
+		int prevpsy = psy;
+		switch (facing) {
+		case NORTH:
+			psy -= 32;
+			break;
+		case EAST:
+			psx += 32;
+			break;
+		case SOUTH:
+			psy += 32;
+			break;
+		case WEST:
+			psx -= 32;
+			break;
+		}
+		MoveTail(prevpsx, prevpsy);
+		steps = speed;
+	}
+	else steps--;
+}
+void SNAKE::MoveTail(int psx, int psy) {
+	aux = first;
+	int newpsx = psx, newpsy = psy;
+	while (aux != NULL) {
+		int prevpsx = aux->psx;
+		int prevpsy = aux->psy;
+		aux->psx = newpsx;
+		aux->psy = newpsy;
+		newpsx = prevpsx;
+		newpsy = prevpsy;
+		aux = aux->next;
+	}
+	aux = first;
+}
+
+void SNAKE::ChangeFacing(unsigned int newfacing) {
+	if (state == STAND_BY) state = PLAYING;
+	if (facing == NORTH && newfacing == SOUTH) return;
+	if (facing == EAST && newfacing == WEST) return;
+	if (facing == SOUTH && newfacing == NORTH) return;
+	if (facing == WEST && newfacing == EAST) return;
+	this->facing = newfacing;
 }
 
 void SNAKE::DrawSnake(HDC destino, HDC backBuff) {

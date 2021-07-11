@@ -100,6 +100,9 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			case MENU_SCREEN:
 				manager->ChangeSelectedIndex(XINPUT_GAMEPAD_DPAD_UP);
 				break;
+			case IN_GAME:
+				manager->Controler(XINPUT_GAMEPAD_DPAD_UP);
+				break;
 			}
 			break;
 		case VK_DOWN:
@@ -107,16 +110,23 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			case MENU_SCREEN:
 				manager->ChangeSelectedIndex(XINPUT_GAMEPAD_DPAD_DOWN);
 				break;
+			case IN_GAME:
+				manager->Controler(XINPUT_GAMEPAD_DPAD_DOWN);
+				break;
 			}
 			break;
 		case VK_LEFT:
 			switch (manager->GetGameState()) {
-
+			case IN_GAME:
+				manager->Controler(XINPUT_GAMEPAD_DPAD_LEFT);
+				break;
 			}
 			break;
 		case VK_RIGHT:
 			switch (manager->GetGameState()) {
-
+			case IN_GAME:
+				manager->Controler(XINPUT_GAMEPAD_DPAD_RIGHT);
+				break;
 			}
 			break;
 		case VK_RETURN:
@@ -149,6 +159,9 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 				case MENU_SCREEN:
 					manager->ChangeSelectedIndex(XINPUT_GAMEPAD_DPAD_UP);
 					break;
+				case IN_GAME:
+					manager->Controler(XINPUT_GAMEPAD_DPAD_UP);
+					break;
 				}
 				break;
 			case XINPUT_GAMEPAD_DPAD_DOWN:
@@ -157,13 +170,26 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 				case MENU_SCREEN:
 					manager->ChangeSelectedIndex(XINPUT_GAMEPAD_DPAD_DOWN);
 					break;
+				case IN_GAME:
+					manager->Controler(XINPUT_GAMEPAD_DPAD_DOWN);
+					break;
 				}
 				break;
 			case XINPUT_GAMEPAD_DPAD_LEFT:
 				if (prevState.wButtons & currState.wButtons) break;
+				switch (manager->GetGameState()) {
+				case IN_GAME:
+					manager->Controler(XINPUT_GAMEPAD_DPAD_LEFT);
+					break;
+				}
 				break;
 			case XINPUT_GAMEPAD_DPAD_RIGHT:
 				if (prevState.wButtons & currState.wButtons) break;
+				switch (manager->GetGameState()) {
+				case IN_GAME:
+					manager->Controler(XINPUT_GAMEPAD_DPAD_RIGHT);
+					break;
+				}
 				break;
 			case XINPUT_GAMEPAD_START:
 				if (prevState.wButtons & currState.wButtons) break;
@@ -187,6 +213,8 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 		}
 		case TM_TIMER_FRAME: {
 			GAMEMANAGER* manager = GAMEMANAGER::getInstance();
+			if (manager->GetGameState() == IN_GAME)
+				manager->Algorythm();
 			manager->Renderize();
 			manager->Render(hwnd);
 			break;

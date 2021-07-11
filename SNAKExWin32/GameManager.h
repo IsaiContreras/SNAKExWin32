@@ -63,10 +63,12 @@ public:
 	void SelectOption(HINSTANCE hInst, HWND hwnd);
 	
 	void ChangeState(HINSTANCE, unsigned short);
+	void Algorythm();
 	void Renderize();
 	void Render(HWND);
 
 	void ChangeSelectedIndex(UINT button);
+	void Controler(UINT button);
 
 	unsigned short GetGameState();
 
