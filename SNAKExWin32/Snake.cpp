@@ -69,6 +69,7 @@ void SNAKE::MoveSnake() {
 	if (steps == 0) {
 		int prevpsx = psx;
 		int prevpsy = psy;
+		int prevface = facing;
 		switch (facing) {
 		case NORTH:
 			psy -= 32;
@@ -83,23 +84,26 @@ void SNAKE::MoveSnake() {
 			psx -= 32;
 			break;
 		}
-		MoveTail(prevpsx, prevpsy);
+		MoveTail(prevpsx, prevpsy, prevface);
 		facing_sprite = facing;
 		state = PLAYING;
 		steps = speed;
 	}
 	else steps--;
 }
-void SNAKE::MoveTail(int psx, int psy) {
+void SNAKE::MoveTail(int psx, int psy, int facing) {
 	aux = first;
-	int newpsx = psx, newpsy = psy;
+	int newpsx = psx, newpsy = psy, newface = facing;
 	while (aux != NULL) {
 		int prevpsx = aux->psx;
 		int prevpsy = aux->psy;
+		int prevface = aux->facing;
 		aux->psx = newpsx;
 		aux->psy = newpsy;
+		aux->facing = newface;
 		newpsx = prevpsx;
 		newpsy = prevpsy;
+		newface = prevface;
 		aux = aux->next;
 	}
 	aux = first;
@@ -120,9 +124,56 @@ void SNAKE::ChangeFacing(unsigned int newfacing) {
 
 void SNAKE::DrawSnake(HDC destino, HDC backBuff) {
 	DrawCut(destino, backBuff, 20 + (32 * this->facing_sprite) , 20, 32, 32, this->psx, this->psy);
-	while (aux != NULL) {
-		DrawCut(destino, backBuff, 148, 20, 32, 32, aux->psx, aux->psy);
+	while (aux != last) {
+		if (aux->facing != aux->next->facing) {
+			switch (aux->facing) {
+			case NORTH:
+				switch (aux->next->facing) {
+				case WEST:
+					DrawCut(destino, backBuff, 20, 86, 32, 32, aux->psx, aux->psy);
+					break;
+				case EAST:
+					DrawCut(destino, backBuff, 116, 86, 32, 32, aux->psx, aux->psy);
+					break;
+				}
+				break;
+			case EAST:
+				switch (aux->next->facing) {
+				case NORTH:
+					DrawCut(destino, backBuff, 52, 86, 32, 32, aux->psx, aux->psy);
+					break;
+				case SOUTH:
+					DrawCut(destino, backBuff, 20, 86, 32, 32, aux->psx, aux->psy);
+					break;
+				}
+				break;
+			case SOUTH:
+				switch (aux->next->facing) {
+				case EAST:
+					DrawCut(destino, backBuff, 84, 86, 32, 32, aux->psx, aux->psy);
+					break;
+				case WEST:
+					DrawCut(destino, backBuff, 52, 86, 32, 32, aux->psx, aux->psy);
+					break;
+				}
+				break;
+			case WEST:
+				switch (aux->next->facing) {
+				case SOUTH:
+					DrawCut(destino, backBuff, 116, 86, 32, 32, aux->psx, aux->psy);
+					break;
+				case NORTH:
+					DrawCut(destino, backBuff, 84, 86, 32, 32, aux->psx, aux->psy);
+					break;
+				}
+				break;
+			}
+		}
+		else {
+			DrawCut(destino, backBuff, 20 + (32 * (aux->facing % 2)), 53, 32, 32, aux->psx, aux->psy);
+		}
 		aux = aux->next;
 	}
+	DrawCut(destino, backBuff, 20 + (32 * last->facing), 119, 32, 32, last->psx, last->psy);
 	aux = first;
 }

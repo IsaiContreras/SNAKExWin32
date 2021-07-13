@@ -66,10 +66,10 @@
     <Image Include="Sprites\menu_cards_mask.bmp">
       <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="Sprites\snake_sprites.bmp">
+    <Image Include="Sprites\snake_sprites2.bmp">
       <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="Sprites\snake_sprites_mask.bmp">
+    <Image Include="Sprites\snake_sprites2_mask.bmp">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>

@@ -38,7 +38,6 @@ class SNAKE : private SPRITE {
 
 		int psx, psy;
 		unsigned int facing;
-		unsigned int sprite;
 
 		TAIL(int, int, unsigned int);
 
@@ -48,7 +47,7 @@ class SNAKE : private SPRITE {
 	~SNAKE();
 
 	void MoveSnake();
-	void MoveTail(int psx, int psy);
+	void MoveTail(int psx, int psy, int facing);
 
 	void ChangeFacing(unsigned int newfacing);
 

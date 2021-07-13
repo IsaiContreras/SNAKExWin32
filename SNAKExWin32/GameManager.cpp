@@ -13,7 +13,7 @@ void GAMEMANAGER::LoadTitleSprites(HINSTANCE hInstance) {
 		menusheet = new SPRITE(hInstance, IDB_MENU, IDB_MENU_M);
 }
 void GAMEMANAGER::LoadGameSprites(HINSTANCE hInstance) {
-	player = new SNAKE(hInstance, IDB_SNAKE, IDB_SNAKE_M, 352, 352, WEST, 10, 3);
+	player = new SNAKE(hInstance, IDB_SNAKE, IDB_SNAKE_M, 352, 352, WEST, 6, 5);
 }
 void GAMEMANAGER::LoadResultsSprites(HINSTANCE hInstance) {
 
