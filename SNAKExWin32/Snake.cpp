@@ -64,6 +64,17 @@ SNAKE::TAIL::TAIL(int posx, int posy, unsigned int facing) {
 	this->prev = NULL;
 }
 
+void SNAKE::Eat() {
+	longtail++;
+	aux = first;
+	while (aux != last) aux = aux->next;
+	aux->next = new TAIL(ptx, pty, ptface);
+	aux->next->prev = aux;
+	aux = aux->next;
+	last = aux;
+	aux = first;
+}
+
 void SNAKE::MoveSnake() {
 	if (state == STAND_BY) return;
 	if (steps == 0) {
@@ -106,23 +117,37 @@ void SNAKE::MoveTail(int psx, int psy, int facing) {
 		newface = prevface;
 		aux = aux->next;
 	}
+	ptx = newpsx;
+	pty = newpsy;
+	ptface = newface;
 	aux = first;
 }
 
 void SNAKE::ChangeFacing(unsigned int newfacing) {
 	if (state == STAND_BY) state = PLAYING;
-	if (facing == NORTH && newfacing == SOUTH) return;
-	if (facing == EAST && newfacing == WEST) return;
-	if (facing == SOUTH && newfacing == NORTH) return;
-	if (facing == WEST && newfacing == EAST) return;
+	if (facing_sprite == NORTH && newfacing == SOUTH) return;
+	if (facing_sprite == EAST && newfacing == WEST) return;
+	if (facing_sprite == SOUTH && newfacing == NORTH) return;
+	if (facing_sprite == WEST && newfacing == EAST) return;
 	if (state == COOLDOWN) return;
 	if (state == PLAYING){
 		this->facing = newfacing;
 		state = COOLDOWN;
 	}
 }
+bool SNAKE::CheckPositionCollide(int psx, int psy) {
+	if (this->psx == psx & this->psy == psy) return true;
+	aux = first;
+	while (aux != NULL) {
+		if (aux->psx == psx & aux->psy == psy) return true;
+		aux = aux->next;
+	}
+	aux = first;
+	return false;
+}
 
-void SNAKE::DrawSnake(HDC destino, HDC backBuff) {
+void SNAKE::Draw(HDC destino, HDC backBuff) {
+	aux = first;
 	DrawCut(destino, backBuff, 20 + (32 * this->facing_sprite) , 20, 32, 32, this->psx, this->psy);
 	while (aux != last) {
 		if (aux->facing != aux->next->facing) {

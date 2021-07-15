@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Fruit.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GamePadRR.cpp" />
     <ClCompile Include="mainSource.cpp" />
@@ -131,6 +132,7 @@
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Fruit.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GamePadRR.h" />
     <ClInclude Include="resource.h" />
@@ -143,6 +145,8 @@
   <ItemGroup>
     <Image Include="Sprites\background.bmp" />
     <Image Include="Sprites\background_mask.bmp" />
+    <Image Include="Sprites\fruits.bmp" />
+    <Image Include="Sprites\fruits_mask.bmp" />
     <Image Include="Sprites\menu_cards.bmp" />
     <Image Include="Sprites\menu_cards_mask.bmp" />
     <Image Include="Sprites\snake_sprites2.bmp" />

@@ -4,6 +4,7 @@
 #include "resource.h"
 #include "Sprite.h"
 #include "Snake.h"
+#include "Fruit.h"
 #include "GamePadRR.h"
 
 // Estado del juego
@@ -34,6 +35,7 @@ class GAMEMANAGER {
 	SPRITE* menusheet = NULL;
 
 	SNAKE* player;
+	FRUIT* fruit;
 
 	static GAMEMANAGER* _instance;
 

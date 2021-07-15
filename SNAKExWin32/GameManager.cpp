@@ -13,7 +13,10 @@ void GAMEMANAGER::LoadTitleSprites(HINSTANCE hInstance) {
 		menusheet = new SPRITE(hInstance, IDB_MENU, IDB_MENU_M);
 }
 void GAMEMANAGER::LoadGameSprites(HINSTANCE hInstance) {
-	player = new SNAKE(hInstance, IDB_SNAKE, IDB_SNAKE_M, 352, 352, WEST, 6, 5);
+	player = new SNAKE(hInstance, IDB_SNAKE, IDB_SNAKE_M, 352, 352, WEST, 6, 10);
+	fruit = new FRUIT(hInstance, IDB_FRUIT, IDB_FRUIT_M, 32, 32, 20, 20, 2);
+	while (player->CheckPositionCollide(fruit->GetPosX(), fruit->GetPosY()))
+		fruit->Generate();
 }
 void GAMEMANAGER::LoadResultsSprites(HINSTANCE hInstance) {
 
@@ -35,6 +38,10 @@ void GAMEMANAGER::ReleaseGameSprites() {
 	if (player) {
 		delete player;
 		player = NULL;
+	}
+	if (fruit) {
+		delete fruit;
+		fruit = NULL;
 	}
 }
 void GAMEMANAGER::ReleaseResultsSprites() {
@@ -123,6 +130,11 @@ void GAMEMANAGER::ChangeState(HINSTANCE hInstance, unsigned short state) {
 }
 void GAMEMANAGER::Algorythm() {
 	player->MoveSnake();
+	if (fruit->CheckPositionColide(player->psx, player->psy)) {
+		player->Eat();
+		while (player->CheckPositionCollide(fruit->GetPosX(), fruit->GetPosY()))
+			fruit->Generate();
+	}
 }
 void GAMEMANAGER::Renderize() {
 	background->Draw(outputDC, backBuff, 0, 0);
@@ -143,7 +155,8 @@ void GAMEMANAGER::Renderize() {
 		else menusheet->DrawCut(outputDC, backBuff, 518, 20, 46, 30, 177, 607 + (54 * (selectedIndex - 3)));
 		break;
 	case IN_GAME:
-		player->DrawSnake(outputDC, backBuff);
+		player->Draw(outputDC, backBuff);
+		fruit->Draw(outputDC, backBuff);
 		break;
 	case RESULTS_SCREEN:
 		break;

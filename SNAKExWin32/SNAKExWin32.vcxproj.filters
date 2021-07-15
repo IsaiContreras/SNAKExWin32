@@ -30,6 +30,9 @@
     <ClCompile Include="GamePadRR.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="Fruit.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sprite.h">
@@ -45,6 +48,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="GamePadRR.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Fruit.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
@@ -70,6 +76,12 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="Sprites\snake_sprites2_mask.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Sprites\fruits.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Sprites\fruits_mask.bmp">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>
