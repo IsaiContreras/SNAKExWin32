@@ -22,11 +22,11 @@ class SNAKE : private SPRITE {
 
 	friend class GAMEMANAGER;
 
-	int psx, psy;
-	int ptx, pty;
-	unsigned int ptface;
+	int posX, posY;
+	int prevTailX, prevTailY;
+	unsigned int prevTailFacing;
+	unsigned int facingChange;
 	unsigned int facing;
-	unsigned int facing_sprite;
 	unsigned int state = STAND_BY;
 	unsigned int speed;
 	unsigned int steps = 0;
@@ -39,7 +39,7 @@ class SNAKE : private SPRITE {
 		TAIL* next;
 		TAIL* prev;
 
-		int psx, psy;
+		int posX, posY;
 		unsigned int facing;
 
 		TAIL(int psx, int psy, unsigned int facing);
@@ -56,6 +56,8 @@ class SNAKE : private SPRITE {
 
 	void ChangeFacing(unsigned int newfacing);
 	bool CheckPositionCollide(int psx, int psy);
+	bool CheckTailCollide();
+	bool CheckWallsCollide(int left, int right, int top, int bottom);
 
 	void Draw(HDC, HDC);
 

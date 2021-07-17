@@ -14,7 +14,7 @@ void GAMEMANAGER::LoadTitleSprites(HINSTANCE hInstance) {
 }
 void GAMEMANAGER::LoadGameSprites(HINSTANCE hInstance) {
 	player = new SNAKE(hInstance, IDB_SNAKE, IDB_SNAKE_M, 352, 352, WEST, 6, 10);
-	fruit = new FRUIT(hInstance, IDB_FRUIT, IDB_FRUIT_M, 32, 32, 20, 20, 2);
+	fruit = new FRUIT(hInstance, IDB_FRUIT, IDB_FRUIT_M, 32, 32, 20, 20, 5);
 	while (player->CheckPositionCollide(fruit->GetPosX(), fruit->GetPosY()))
 		fruit->Generate();
 }
@@ -48,15 +48,15 @@ void GAMEMANAGER::ReleaseResultsSprites() {
 	
 }
 
-void GAMEMANAGER::ExitGame(HWND hwnd) {
-	DestroyWindow(hwnd);
-}
-
 void GAMEMANAGER::ReleaseAllSprites() {
 	ReleaseBackgroundSprite();
 	ReleaseTitleSprites();
 	ReleaseGameSprites();
 	ReleaseResultsSprites();
+}
+
+void GAMEMANAGER::ExitGame(HWND hwnd) {
+	DestroyWindow(hwnd);
 }
 
 GAMEMANAGER::~GAMEMANAGER() {
@@ -118,6 +118,7 @@ void GAMEMANAGER::ChangeState(HINSTANCE hInstance, unsigned short state) {
 		LoadTitleSprites(hInstance);
 		break;
 	case MENU_SCREEN:
+		LoadTitleSprites(hInstance);
 		selectedIndex = 0;
 		break;
 	case IN_GAME:
@@ -130,7 +131,8 @@ void GAMEMANAGER::ChangeState(HINSTANCE hInstance, unsigned short state) {
 }
 void GAMEMANAGER::Algorythm() {
 	player->MoveSnake();
-	if (fruit->CheckPositionColide(player->psx, player->psy)) {
+	
+	if (fruit->CheckPositionColide(player->posX, player->posY)) {
 		player->Eat();
 		while (player->CheckPositionCollide(fruit->GetPosX(), fruit->GetPosY()))
 			fruit->Generate();

@@ -8,10 +8,10 @@
 
 class FRUIT : private SPRITE {
 
-	int opsx, opsy;
-	int ranx, rany;
-	int fruittypes;
-	int psx, psy;
+	int originX, originY;
+	int rangeX, rangeY;
+	int fruitTypes;
+	int posX, posY;
 	unsigned int type;
 
 public:

@@ -51,9 +51,9 @@ class GAMEMANAGER {
 	void ReleaseGameSprites();
 	void ReleaseResultsSprites();
 
-	void ExitGame(HWND);
-
 	void ReleaseAllSprites();
+
+	void ExitGame(HWND);
 
 public:
 

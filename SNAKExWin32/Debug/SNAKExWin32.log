@@ -1,7 +1,11 @@
-﻿  GameManager.cpp
+﻿  Fruit.cpp
+d:\alexi\documents\carpetas de proyectos\proyectos visual\snakexwin32\snakexwin32\fruit.cpp(4): warning C4244: 'argumento': conversión de 'time_t' a 'unsigned int'; posible pérdida de datos
+d:\alexi\documents\carpetas de proyectos\proyectos visual\snakexwin32\snakexwin32\fruit.cpp(31): warning C4554: "&": compruebe la prioridad de operador para posibles errores; utilice paréntesis para indicar la prioridad
+  GameManager.cpp
   Snake.cpp
 d:\alexi\documents\carpetas de proyectos\proyectos visual\snakexwin32\snakexwin32\snake.cpp(139): warning C4554: "&": compruebe la prioridad de operador para posibles errores; utilice paréntesis para indicar la prioridad
 d:\alexi\documents\carpetas de proyectos\proyectos visual\snakexwin32\snakexwin32\snake.cpp(142): warning C4554: "&": compruebe la prioridad de operador para posibles errores; utilice paréntesis para indicar la prioridad
+d:\alexi\documents\carpetas de proyectos\proyectos visual\snakexwin32\snakexwin32\snake.cpp(151): warning C4554: "&": compruebe la prioridad de operador para posibles errores; utilice paréntesis para indicar la prioridad
   mainSource.cpp
 d:\alexi\documents\carpetas de proyectos\proyectos visual\snakexwin32\snakexwin32\mainsource.cpp(40): warning C4302: 'conversión de tipo': truncamiento de 'LPWSTR' a 'WORD'
 d:\alexi\documents\carpetas de proyectos\proyectos visual\snakexwin32\snakexwin32\mainsource.cpp(45): warning C4302: 'conversión de tipo': truncamiento de 'LPWSTR' a 'WORD'
