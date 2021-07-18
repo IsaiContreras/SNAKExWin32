@@ -19,6 +19,9 @@ enum GAMESTATE {
 // GameManager Singleton
 class GAMEMANAGER {
 
+	HINSTANCE gameInstance;
+	HWND gameWindow;
+
 	HDC outputDC;
 	HDC backBuff;
 	HBITMAP surface;
@@ -41,10 +44,10 @@ class GAMEMANAGER {
 
 	GAMEMANAGER();
 	
-	void LoadBackgroundSprite(HINSTANCE);
-	void LoadTitleSprites(HINSTANCE);
-	void LoadGameSprites(HINSTANCE);
-	void LoadResultsSprites(HINSTANCE);
+	void LoadBackgroundSprite();
+	void LoadTitleSprites();
+	void LoadGameSprites();
+	void LoadResultsSprites();
 
 	void ReleaseBackgroundSprite();
 	void ReleaseTitleSprites();
@@ -53,7 +56,7 @@ class GAMEMANAGER {
 
 	void ReleaseAllSprites();
 
-	void ExitGame(HWND);
+	void ExitGame();
 
 public:
 
@@ -61,13 +64,13 @@ public:
 
 	static GAMEMANAGER* getInstance();
 
-	void InitializeScreen(HWND);
-	void SelectOption(HINSTANCE hInst, HWND hwnd);
+	void InitializeScreen(HINSTANCE, HWND);
+	void SelectOption();
 	
-	void ChangeState(HINSTANCE, unsigned short);
+	void ChangeState(unsigned short);
 	void Algorythm();
 	void Renderize();
-	void Render(HWND);
+	void Render();
 
 	void ChangeSelectedIndex(UINT button);
 	void Controler(UINT button);

@@ -4,21 +4,24 @@ GAMEMANAGER::GAMEMANAGER() {
 	outputDC = backBuff = NULL;
 }
 
-void GAMEMANAGER::LoadBackgroundSprite(HINSTANCE hInstance) {
+void GAMEMANAGER::LoadBackgroundSprite() {
 	if (!background)
-		background = new SPRITE(hInstance, IDB_BACKGROUND, IDB_BACKGROUND_M);
+		background = new SPRITE(gameInstance, IDB_BACKGROUND, IDB_BACKGROUND_M);
 }
-void GAMEMANAGER::LoadTitleSprites(HINSTANCE hInstance) {
+void GAMEMANAGER::LoadTitleSprites() {
 	if (!menusheet)
-		menusheet = new SPRITE(hInstance, IDB_MENU, IDB_MENU_M);
+		menusheet = new SPRITE(gameInstance, IDB_MENU, IDB_MENU_M);
 }
-void GAMEMANAGER::LoadGameSprites(HINSTANCE hInstance) {
-	player = new SNAKE(hInstance, IDB_SNAKE, IDB_SNAKE_M, 352, 352, WEST, 6, 10);
-	fruit = new FRUIT(hInstance, IDB_FRUIT, IDB_FRUIT_M, 32, 32, 20, 20, 5);
-	while (player->CheckPositionCollide(fruit->GetPosX(), fruit->GetPosY()))
-		fruit->Generate();
+void GAMEMANAGER::LoadGameSprites() {
+	if (!player)
+		player = new SNAKE(gameInstance, IDB_SNAKE, IDB_SNAKE_M, 352, 352, WEST, 6, 10);
+	if (!fruit) {
+		fruit = new FRUIT(gameInstance, IDB_FRUIT, IDB_FRUIT_M, 32, 32, 20, 20, 5);
+		while (player->CheckPositionCollide(fruit->GetPosX(), fruit->GetPosY()))
+			fruit->Generate();
+	}
 }
-void GAMEMANAGER::LoadResultsSprites(HINSTANCE hInstance) {
+void GAMEMANAGER::LoadResultsSprites() {
 
 }
 
@@ -55,8 +58,8 @@ void GAMEMANAGER::ReleaseAllSprites() {
 	ReleaseResultsSprites();
 }
 
-void GAMEMANAGER::ExitGame(HWND hwnd) {
-	DestroyWindow(hwnd);
+void GAMEMANAGER::ExitGame() {
+	DestroyWindow(gameWindow);
 }
 
 GAMEMANAGER::~GAMEMANAGER() {
@@ -74,7 +77,9 @@ GAMEMANAGER* GAMEMANAGER::getInstance() {
 	return _instance;
 }
 
-void GAMEMANAGER::InitializeScreen(HWND hwnd) {
+void GAMEMANAGER::InitializeScreen(HINSTANCE instance, HWND hwnd) {
+	this->gameInstance = instance;
+	this->gameWindow = hwnd;
 	backBuff = CreateCompatibleDC(NULL);
 	HDC tempDC = GetDC(hwnd);
 	outputDC = CreateCompatibleDC(tempDC);
@@ -86,56 +91,63 @@ void GAMEMANAGER::InitializeScreen(HWND hwnd) {
 	Rectangle(outputDC, 0, 0, 720, 804);
 	SelectObject(outputDC, oldBrush);
 }
-void GAMEMANAGER::SelectOption(HINSTANCE hInst, HWND hwnd) {
+void GAMEMANAGER::SelectOption() {
 	switch (selectedIndex) {
 	case 0:
 		ReleaseTitleSprites();
-		ChangeState(hInst, IN_GAME);
+		ChangeState(IN_GAME);
 		break;
 	case 1:
 		ReleaseTitleSprites();
-		ChangeState(hInst, IN_GAME);
+		ChangeState(IN_GAME);
 		break;
 	case 2:
 		ReleaseTitleSprites();
-		ChangeState(hInst, IN_GAME);
+		ChangeState(IN_GAME);
 		break;
 	case 3:
-		ExitGame(hwnd);
+		ExitGame();
 		break;
 	}
 }
 
-void GAMEMANAGER::ChangeState(HINSTANCE hInstance, unsigned short state) {
+void GAMEMANAGER::ChangeState(unsigned short state) {
 	this->GameState = state;
 	switch (state) {
 	case INITIALIZE:
-		LoadBackgroundSprite(hInstance);
-		LoadTitleSprites(hInstance);
+		LoadBackgroundSprite();
+		LoadTitleSprites();
 		this->GameState = TITLE_SCREEN;
 		break;
 	case TITLE_SCREEN:
-		LoadTitleSprites(hInstance);
+		LoadTitleSprites();
 		break;
 	case MENU_SCREEN:
-		LoadTitleSprites(hInstance);
+		LoadTitleSprites();
 		selectedIndex = 0;
 		break;
 	case IN_GAME:
-		LoadGameSprites(hInstance);
+		LoadGameSprites();
 		break;
 	case RESULTS_SCREEN:
-		LoadResultsSprites(hInstance);
+		LoadResultsSprites();
 		break;
 	}
 }
 void GAMEMANAGER::Algorythm() {
 	player->MoveSnake();
-	
 	if (fruit->CheckPositionColide(player->posX, player->posY)) {
 		player->Eat();
 		while (player->CheckPositionCollide(fruit->GetPosX(), fruit->GetPosY()))
 			fruit->Generate();
+	}
+	else if (player->CheckTailCollide()) {
+		ReleaseGameSprites();
+		ChangeState(MENU_SCREEN);
+	}
+	else if (player->CheckWallsCollide(32, 640, 32, 640)) {
+		ReleaseGameSprites();
+		ChangeState(MENU_SCREEN);
 	}
 }
 void GAMEMANAGER::Renderize() {
@@ -164,10 +176,10 @@ void GAMEMANAGER::Renderize() {
 		break;
 	}
 }
-void GAMEMANAGER::Render(HWND hwnd) {
-	HDC hWndDC = GetDC(hwnd);
+void GAMEMANAGER::Render() {
+	HDC hWndDC = GetDC(gameWindow);
 	BitBlt(hWndDC, 0, 0, 720, 804, outputDC, 0, 0, SRCCOPY);
-	ReleaseDC(hwnd, hWndDC);
+	ReleaseDC(gameWindow, hWndDC);
 }
 
 void GAMEMANAGER::ChangeSelectedIndex(UINT button) {

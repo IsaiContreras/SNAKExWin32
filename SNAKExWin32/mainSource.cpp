@@ -83,8 +83,8 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 	case WM_CREATE: {
 		//Load Sprites
 		GAMEMANAGER* manager = GAMEMANAGER::getInstance();
-		manager->ChangeState(instGlobal, INITIALIZE);
-		manager->InitializeScreen(hwnd);
+		manager->InitializeScreen(instGlobal, hwnd);
+		manager->ChangeState(INITIALIZE);
 		break;
 	}
 	case WM_PAINT: {
@@ -132,14 +132,14 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 		case VK_RETURN:
 			switch (manager->GetGameState()) {
 			case TITLE_SCREEN:
-				manager->ChangeState(instGlobal, MENU_SCREEN);
+				manager->ChangeState(MENU_SCREEN);
 				break;
 			}
 			break;
 		case VK_SPACE:
 			switch (manager->GetGameState()) {
 			case MENU_SCREEN:
-				manager->SelectOption(instGlobal, hwnd);
+				manager->SelectOption();
 				break;
 			}
 			break;
@@ -195,7 +195,7 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 				if (prevState.wButtons & currState.wButtons) break;
 				switch (manager->GetGameState()) {
 				case TITLE_SCREEN:
-					manager->ChangeState(instGlobal, MENU_SCREEN);
+					manager->ChangeState(MENU_SCREEN);
 					break;
 				}
 				break;
@@ -203,7 +203,7 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 				if (prevState.wButtons & currState.wButtons) break;
 				switch (manager->GetGameState()) {
 				case MENU_SCREEN:
-					manager->SelectOption(instGlobal, hwnd);
+					manager->SelectOption();
 					break;
 				}
 				break;
@@ -216,7 +216,7 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			if (manager->GetGameState() == IN_GAME)
 				manager->Algorythm();
 			manager->Renderize();
-			manager->Render(hwnd);
+			manager->Render();
 			break;
 		}
 		}
