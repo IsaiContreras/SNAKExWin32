@@ -128,6 +128,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GamePadRR.cpp" />
     <ClCompile Include="mainSource.cpp" />
+    <ClCompile Include="Score.cpp" />
     <ClCompile Include="Snake.cpp" />
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
@@ -136,6 +137,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GamePadRR.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Score.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="Sprite.h" />
   </ItemGroup>
@@ -151,6 +153,8 @@
     <Image Include="Sprites\ingame_cards_mask.bmp" />
     <Image Include="Sprites\menu_cards.bmp" />
     <Image Include="Sprites\menu_cards_mask.bmp" />
+    <Image Include="Sprites\numerics.bmp" />
+    <Image Include="Sprites\numerics_mask.bmp" />
     <Image Include="Sprites\snake_sprites2.bmp" />
     <Image Include="Sprites\snake_sprites2_mask.bmp" />
   </ItemGroup>

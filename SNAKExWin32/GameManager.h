@@ -5,6 +5,7 @@
 #include "Sprite.h"
 #include "Snake.h"
 #include "Fruit.h"
+#include "Score.h"
 #include "GamePadRR.h"
 
 // Estado del juego
@@ -31,14 +32,12 @@ class GAMEMANAGER {
 	unsigned short GameState;
 	bool pause = false;
 
-	unsigned long score;
-
 	short selectedIndex;
 
 	SPRITE* background = NULL;
 	SPRITE* menusheet = NULL;
 	SPRITE* ingame_cards = NULL;
-	SPRITE* numerics = NULL;
+	SCORE* score = NULL;
 
 	SNAKE* player;
 	FRUIT* fruit;

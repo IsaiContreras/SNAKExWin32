@@ -22,6 +22,8 @@ void GAMEMANAGER::LoadGameSprites() {
 	}
 	if (!ingame_cards)
 		ingame_cards = new SPRITE(gameInstance, IDB_INGAMECARDS, IDB_INGAMECARDS_M);
+	if (!score)
+		score = new SCORE(gameInstance, IDB_NUMERICS, IDB_NUMERICS_M);
 }
 void GAMEMANAGER::LoadResultsSprites() {
 
@@ -51,6 +53,10 @@ void GAMEMANAGER::ReleaseGameSprites() {
 	if (ingame_cards) {
 		delete ingame_cards;
 		ingame_cards = NULL;
+	}
+	if (score) {
+		delete score;
+		score = NULL;
 	}
 }
 void GAMEMANAGER::ReleaseResultsSprites() {
@@ -151,6 +157,7 @@ void GAMEMANAGER::Algorythm() {
 	player->MoveSnake();
 	if (fruit->CheckPositionColide(player->posX, player->posY)) {
 		player->Eat();
+		score->Score(100);
 		while (player->CheckPositionCollide(fruit->GetPosX(), fruit->GetPosY()))
 			fruit->Generate();
 	}
@@ -183,11 +190,13 @@ void GAMEMANAGER::Renderize() {
 		player->Draw(outputDC, backBuff);
 		fruit->Draw(outputDC, backBuff);
 		if (pause) ingame_cards->DrawCut(outputDC, backBuff, 20, 114, 146, 37, 279, 333);
+		score->Draw(outputDC, backBuff, 150, 708);
 		break;
 	case GAME_OVER:
-		ingame_cards->DrawCut(outputDC, backBuff, 20, 20, 157, 73, 273, 315);
 		player->Draw(outputDC, backBuff);
 		fruit->Draw(outputDC, backBuff);
+		ingame_cards->DrawCut(outputDC, backBuff, 20, 20, 157, 73, 273, 315);
+		score->Draw(outputDC, backBuff, 150, 396);
 	case RESULTS_SCREEN:
 		break;
 	}

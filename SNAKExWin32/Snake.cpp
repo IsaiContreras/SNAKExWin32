@@ -1,6 +1,6 @@
 #include "Snake.h"
 
-SNAKE::SNAKE(HINSTANCE hInst, UINT imageID, UINT maskID, int initPX, int initPY, int facing, unsigned short mode) : SPRITE(hInst, imageID, maskID) {
+SNAKE::SNAKE(HINSTANCE instance, UINT imageID, UINT maskID, int initPX, int initPY, int facing, unsigned short mode) : SPRITE(instance, imageID, maskID) {
 	this->posX = initPX;
 	this->posY = initPY;
 	this->facing = facing;

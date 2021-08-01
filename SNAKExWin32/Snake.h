@@ -49,7 +49,7 @@ class SNAKE : private SPRITE {
 
 	}*aux = NULL, *first = NULL, *last = NULL;
 	
-	SNAKE(HINSTANCE, UINT, UINT, int initPX, int initPY, int facing, unsigned short mode);
+	SNAKE(HINSTANCE instance, UINT imageID, UINT maskID, int initPX, int initPY, int facing, unsigned short mode);
 	~SNAKE();
 
 	void Eat();

@@ -13,12 +13,14 @@
 #define IDB_FRUIT_M                     108
 #define IDB_INGAMECARDS                 109
 #define IDB_INGAMECARDS_M               110
+#define IDB_NUMERICS                    111
+#define IDB_NUMERICS_M                  112
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        120
+#define _APS_NEXT_RESOURCE_VALUE        122
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101
