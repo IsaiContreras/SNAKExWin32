@@ -147,6 +147,8 @@
     <Image Include="Sprites\background_mask.bmp" />
     <Image Include="Sprites\fruits.bmp" />
     <Image Include="Sprites\fruits_mask.bmp" />
+    <Image Include="Sprites\ingame_cards.bmp" />
+    <Image Include="Sprites\ingame_cards_mask.bmp" />
     <Image Include="Sprites\menu_cards.bmp" />
     <Image Include="Sprites\menu_cards_mask.bmp" />
     <Image Include="Sprites\snake_sprites2.bmp" />

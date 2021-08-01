@@ -1,12 +1,33 @@
 #include "Snake.h"
 
-SNAKE::SNAKE(HINSTANCE hInst, UINT imageID, UINT maskID, int initPX, int initPY, int facing, int speed, unsigned int longtail) : SPRITE(hInst, imageID, maskID) {
+SNAKE::SNAKE(HINSTANCE hInst, UINT imageID, UINT maskID, int initPX, int initPY, int facing, unsigned short mode) : SPRITE(hInst, imageID, maskID) {
 	this->posX = initPX;
 	this->posY = initPY;
 	this->facing = facing;
-	this->speed = speed;
-	this->longtail = longtail;
-	for (unsigned int i = 1; i <= longtail; i++) {
+	switch (mode) {
+	case 0:
+		speed = 10;
+		speedLimit = 2;
+		speedSub = 2;
+		eatsToSpeedUp = 4;
+		longTail = 5;
+		break;
+	case 1:
+		speed = 9;
+		speedLimit = 0;
+		speedSub = 3;
+		eatsToSpeedUp = 10;
+		longTail = 5;
+		break;
+	case 2:
+		speed = 5;
+		speedLimit = 1;
+		speedSub = 1;
+		eatsToSpeedUp = 8;
+		longTail = 8;
+		break;
+	}
+	for (unsigned int i = 1; i <= longTail; i++) {
 		if (first != NULL) {
 			switch (facing) {
 			case NORTH:
@@ -65,7 +86,14 @@ SNAKE::TAIL::TAIL(int posx, int posy, unsigned int facing) {
 }
 
 void SNAKE::Eat() {
-	longtail++;
+	longTail++;
+	static unsigned int eats = 0;
+	eats++;
+	if (eats > eatsToSpeedUp) {
+		eats = 0;
+		if (speed > speedLimit) speed -= speedSub;
+		else speed = speedLimit;
+	}
 	aux = first;
 	while (aux != last) aux = aux->next;
 	aux->next = new TAIL(prevTailX, prevTailY, prevTailFacing);

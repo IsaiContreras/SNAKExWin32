@@ -134,6 +134,12 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			case TITLE_SCREEN:
 				manager->ChangeState(MENU_SCREEN);
 				break;
+			case IN_GAME:
+				manager->TogglePause();
+				break;
+			case GAME_OVER:
+				manager->Restart();
+				break;
 			}
 			break;
 		case VK_SPACE:
@@ -197,6 +203,9 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 				case TITLE_SCREEN:
 					manager->ChangeState(MENU_SCREEN);
 					break;
+				case IN_GAME:
+					manager->TogglePause();
+					break;
 				}
 				break;
 			case XINPUT_GAMEPAD_A:
@@ -213,8 +222,7 @@ LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 		}
 		case TM_TIMER_FRAME: {
 			GAMEMANAGER* manager = GAMEMANAGER::getInstance();
-			if (manager->GetGameState() == IN_GAME)
-				manager->Algorythm();
+			manager->Algorythm();
 			manager->Renderize();
 			manager->Render();
 			break;

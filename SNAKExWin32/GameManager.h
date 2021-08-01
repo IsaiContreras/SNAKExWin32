@@ -13,6 +13,7 @@ enum GAMESTATE {
 	TITLE_SCREEN,
 	MENU_SCREEN,
 	IN_GAME,
+	GAME_OVER,
 	RESULTS_SCREEN
 };
 
@@ -36,6 +37,8 @@ class GAMEMANAGER {
 
 	SPRITE* background = NULL;
 	SPRITE* menusheet = NULL;
+	SPRITE* ingame_cards = NULL;
+	SPRITE* numerics = NULL;
 
 	SNAKE* player;
 	FRUIT* fruit;
@@ -74,6 +77,8 @@ public:
 
 	void ChangeSelectedIndex(UINT button);
 	void Controler(UINT button);
+	void TogglePause();
+	void Restart();
 
 	unsigned short GetGameState();
 

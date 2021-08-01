@@ -8,7 +8,7 @@ enum STATE {
 	STAND_BY,
 	COOLDOWN,
 	PLAYING,
-	CRASHED
+	GAMEOVER
 };
 
 enum FACING {
@@ -28,9 +28,12 @@ class SNAKE : private SPRITE {
 	unsigned int facingChange;
 	unsigned int facing;
 	unsigned int state = STAND_BY;
-	unsigned int speed;
 	unsigned int steps = 0;
-	unsigned int longtail;
+	unsigned int speed;
+	unsigned int speedLimit;
+	unsigned int speedSub;
+	unsigned short eatsToSpeedUp;
+	unsigned int longTail;
 
 	class TAIL {
 
@@ -46,7 +49,7 @@ class SNAKE : private SPRITE {
 
 	}*aux = NULL, *first = NULL, *last = NULL;
 	
-	SNAKE(HINSTANCE, UINT, UINT, int initPX, int initPY, int facing, int speed, unsigned int longtail);
+	SNAKE(HINSTANCE, UINT, UINT, int initPX, int initPY, int facing, unsigned short mode);
 	~SNAKE();
 
 	void Eat();

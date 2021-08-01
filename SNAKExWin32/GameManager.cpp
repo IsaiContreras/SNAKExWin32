@@ -14,12 +14,14 @@ void GAMEMANAGER::LoadTitleSprites() {
 }
 void GAMEMANAGER::LoadGameSprites() {
 	if (!player)
-		player = new SNAKE(gameInstance, IDB_SNAKE, IDB_SNAKE_M, 352, 352, WEST, 6, 10);
+		player = new SNAKE(gameInstance, IDB_SNAKE, IDB_SNAKE_M, 352, 352, WEST, selectedIndex);
 	if (!fruit) {
 		fruit = new FRUIT(gameInstance, IDB_FRUIT, IDB_FRUIT_M, 32, 32, 20, 20, 5);
 		while (player->CheckPositionCollide(fruit->GetPosX(), fruit->GetPosY()))
 			fruit->Generate();
 	}
+	if (!ingame_cards)
+		ingame_cards = new SPRITE(gameInstance, IDB_INGAMECARDS, IDB_INGAMECARDS_M);
 }
 void GAMEMANAGER::LoadResultsSprites() {
 
@@ -46,6 +48,10 @@ void GAMEMANAGER::ReleaseGameSprites() {
 		delete fruit;
 		fruit = NULL;
 	}
+	if (ingame_cards) {
+		delete ingame_cards;
+		ingame_cards = NULL;
+	}
 }
 void GAMEMANAGER::ReleaseResultsSprites() {
 	
@@ -56,6 +62,10 @@ void GAMEMANAGER::ReleaseAllSprites() {
 	ReleaseTitleSprites();
 	ReleaseGameSprites();
 	ReleaseResultsSprites();
+}
+
+void GAMEMANAGER::TogglePause() {
+	pause ? pause = false : pause = true;
 }
 
 void GAMEMANAGER::ExitGame() {
@@ -127,6 +137,7 @@ void GAMEMANAGER::ChangeState(unsigned short state) {
 		selectedIndex = 0;
 		break;
 	case IN_GAME:
+		score = 0;
 		LoadGameSprites();
 		break;
 	case RESULTS_SCREEN:
@@ -135,6 +146,8 @@ void GAMEMANAGER::ChangeState(unsigned short state) {
 	}
 }
 void GAMEMANAGER::Algorythm() {
+	if (GameState != IN_GAME) return;
+	if (pause) return;
 	player->MoveSnake();
 	if (fruit->CheckPositionColide(player->posX, player->posY)) {
 		player->Eat();
@@ -142,12 +155,10 @@ void GAMEMANAGER::Algorythm() {
 			fruit->Generate();
 	}
 	else if (player->CheckTailCollide()) {
-		ReleaseGameSprites();
-		ChangeState(MENU_SCREEN);
+		ChangeState(GAME_OVER);
 	}
 	else if (player->CheckWallsCollide(32, 640, 32, 640)) {
-		ReleaseGameSprites();
-		ChangeState(MENU_SCREEN);
+		ChangeState(GAME_OVER);
 	}
 }
 void GAMEMANAGER::Renderize() {
@@ -171,7 +182,12 @@ void GAMEMANAGER::Renderize() {
 	case IN_GAME:
 		player->Draw(outputDC, backBuff);
 		fruit->Draw(outputDC, backBuff);
+		if (pause) ingame_cards->DrawCut(outputDC, backBuff, 20, 114, 146, 37, 279, 333);
 		break;
+	case GAME_OVER:
+		ingame_cards->DrawCut(outputDC, backBuff, 20, 20, 157, 73, 273, 315);
+		player->Draw(outputDC, backBuff);
+		fruit->Draw(outputDC, backBuff);
 	case RESULTS_SCREEN:
 		break;
 	}
@@ -180,6 +196,10 @@ void GAMEMANAGER::Render() {
 	HDC hWndDC = GetDC(gameWindow);
 	BitBlt(hWndDC, 0, 0, 720, 804, outputDC, 0, 0, SRCCOPY);
 	ReleaseDC(gameWindow, hWndDC);
+}
+void GAMEMANAGER::Restart() {
+	ReleaseGameSprites();
+	ChangeState(MENU_SCREEN);
 }
 
 void GAMEMANAGER::ChangeSelectedIndex(UINT button) {

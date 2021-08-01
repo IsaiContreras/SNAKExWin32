@@ -84,5 +84,11 @@
     <Image Include="Sprites\fruits_mask.bmp">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="Sprites\ingame_cards.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Sprites\ingame_cards_mask.bmp">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
 </Project>
